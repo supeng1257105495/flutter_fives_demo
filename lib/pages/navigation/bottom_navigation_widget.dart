@@ -9,7 +9,7 @@ import 'package:hello_world_flutter/pages/ui/pages_screen.dart';
 import 'package:hello_world_flutter/pages/ui/airplay_screen.dart';
 
 // logain
-import 'package:hello_world_flutter/pages/ui/login.dart';
+import 'package:hello_world_flutter/pages/ui/login/login.dart';
 
 // storage
 // import 'package:hello_world_flutter/pages/ui/user_provider.dart';
@@ -19,8 +19,8 @@ class BottomNavigationWidget extends StatefulWidget {
 }
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
-  final _bottomNavigationColor = Colors.blue;
-  int _currentIndex = 0;
+  // final _bottomNavigationColor = Colors.blue;
+  // int _currentIndex = 0;
   List<Widget> list = [];
 
   @override
@@ -43,49 +43,49 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     // print(user);
     // 如有无登陆信息则跳转登陆页
     // if (user == null) {
-    // return new LoginPage();
+    return new LoginPage();
     // } else {
-    return Scaffold(
-      body: list[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.email,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Email',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.pages,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Pages',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.airplay,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Airplay',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
-    );
+    // return Scaffold(
+    //   body: list[_currentIndex],
+    //   bottomNavigationBar: BottomNavigationBar(
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.home,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: 'Home',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.email,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: 'Email',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.pages,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: 'Pages',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.airplay,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: 'Airplay',
+    //       ),
+    //     ],
+    //     type: BottomNavigationBarType.fixed,
+    //     currentIndex: _currentIndex,
+    //     onTap: (int index) {
+    //       setState(() {
+    //         _currentIndex = index;
+    //       });
+    //     },
+    //   ),
+    // );
   }
 }
