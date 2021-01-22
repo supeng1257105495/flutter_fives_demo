@@ -1,114 +1,100 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:hello_world_flutter/style/theme.dart' as theme;
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final mainImage = Image.asset(
-      'assets/images/lake.jpg',
-      width: 600,
-      height: 240,
-      fit: BoxFit.cover,
+    final TextStyle titleTextStyle = TextStyle(
+      fontSize: 18,
+      color: Colors.white,
+      fontWeight: FontWeight.w500,
     );
 
-    final headerSection = Container(
-      padding: EdgeInsets.all(24),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Oeschinen Lake Campground',
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  'Kandersteg, Switzerland',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
+    List<String> bannerList = [
+      'assets/banner/CMIYLDYSK.jpg',
+      'assets/banner/CMIYLDYSK1.jpg',
+      'assets/banner/CMIYLDYSK2.jpg',
+      'assets/banner/CMIYLDYSK3.jpg',
+    ];
+
+    final bannerContainer = Container(
+      height: 250,
+      child: new Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          return new Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusDirectional.circular(10),
             ),
-          ),
-          Icon(
-            Icons.star,
-            color: Colors.red,
-          ),
-          Text('41')
-        ],
+            clipBehavior: Clip.antiAlias,
+            child: new Image.asset(
+              bannerList[index],
+              // width: MediaQuery.of(context).size.width * 0.8,
+              fit: BoxFit.fill,
+            ),
+          );
+        },
+        itemCount: bannerList.length,
+        itemWidth: 150,
+        loop: true,
+        autoplay: true,
+        autoplayDelay: 5000,
+        pagination: new SwiperPagination(
+          margin: new EdgeInsets.all(5.0),
+        ), //如果不填则不显示指示点
+        // control: new SwiperControl(), //如果不填则不显示左右按钮
       ),
     );
 
-    final iconSection = Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    final titleDom = new Container(
+      height: MediaQuery.of(context).size.height * 0.1,
+      width: MediaQuery.of(context).size.width,
+      decoration: new BoxDecoration(color: theme.Theme.themeBlue),
+      child: new Column(
         children: [
-          Column(
-            children: [
-              Icon(
-                Icons.call,
-                color: Colors.blue[400],
-              ),
-              Text(
-                'CALL',
-                style: TextStyle(
-                  color: Colors.blue[400],
-                ),
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              Icon(
-                Icons.near_me,
-                color: Colors.blue[400],
-              ),
-              Text(
-                'ROUTE',
-                style: TextStyle(
-                  color: Colors.blue[400],
-                ),
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              Icon(
-                Icons.share,
-                color: Colors.blue[400],
-              ),
-              Text(
-                'SHARE',
-                style: TextStyle(
-                  color: Colors.blue[400],
-                ),
-              ),
-            ],
-          ),
+          new Padding(padding: new EdgeInsets.only(top: 26.0)),
+          new Text(
+            "安全生产管理系统",
+            style: titleTextStyle,
+            textAlign: TextAlign.center,
+          )
         ],
       ),
+      // child: bannerContainer,
     );
 
-    final textSection = Container(
-      padding: EdgeInsets.all(24),
-      child: Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-        'Alps. Situated 1,578 meters above sea level, it is one of the '
-        'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-        'half-hour walk through pastures and pine forest, leads you to the '
-        'lake, which warms to 20 degrees Celsius in the summer. Activities '
-        'enjoyed here include rowing, and riding the summer toboggan run.',
-        softWrap: true,
+    final swiperDom = new Positioned(
+      top: MediaQuery.of(context).size.height * 0.06,
+      left: MediaQuery.of(context).size.width * 0.015,
+      child: new Container(
+        height: MediaQuery.of(context).size.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.97,
+        decoration: new BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        child: bannerContainer,
       ),
     );
 
     return Scaffold(
-      body: ListView(children: [
-        Container(child: mainImage),
-        Container(child: headerSection),
-        Container(child: iconSection),
-        Container(child: textSection),
-      ]),
+      body: SafeArea(
+        child: new Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: new BoxDecoration(color: theme.Theme.themeBackGray),
+          child: new Stack(
+            children: <Widget>[
+              titleDom,
+              swiperDom
+              // Container(child: headerSection),
+              // Container(child: iconSection),
+              // Container(child: textSection),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

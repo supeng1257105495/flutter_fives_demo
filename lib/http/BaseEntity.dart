@@ -16,3 +16,32 @@ class BaseEntity<T> {
     );
   }
 }
+
+class LoginEntity<T> {
+  T user;
+  T company;
+  T roles;
+  T functions;
+  T department;
+  T loginStates;
+
+  LoginEntity({
+    this.user,
+    this.company,
+    this.roles,
+    this.functions,
+    this.department,
+    this.loginStates,
+  });
+
+  factory LoginEntity.fromJson(json) {
+    return LoginEntity(
+      user: json["User"],
+      company: json["Company"],
+      roles: json["Roles"],
+      functions: json["Functions"],
+      department: json["Department"],
+      loginStates: json["loginStates"],
+    );
+  }
+}

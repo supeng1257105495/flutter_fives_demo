@@ -1,18 +1,19 @@
 import 'package:dio/dio.dart';
-import 'package:hello_world_flutter/http/BaseEntity.dart';
-import 'package:hello_world_flutter/http/EntityFactory.dart';
+
+// import 'package:hello_world_flutter/http/BaseEntity.dart';
+// import 'package:hello_world_flutter/http/BaseListEntity.dart';
+// import 'package:hello_world_flutter/http/EntityFactory.dart';
 import 'package:hello_world_flutter/http/ErrorEntity.dart';
+// import 'package:hello_world_flutter/http/BaseEntity.dart';
+
 import 'package:hello_world_flutter/http/NWApi.dart';
 import 'package:hello_world_flutter/http/NWMethod.dart';
 
-///
-/// DioManager：Dio辅助类
-/// NWMethod：请求方法，get、post等
-/// NWApi：默认配置api
-/// EntityFactory：json转换辅助工厂，把json转为T
-/// BaseEntity<T>：数据基类，返回的参数为 {“code”: 0, “message”: “”, “data”: {}}
-/// BaseListEntity<T>：数据基类2，返回的参数为 {“code”: 0, “message”: “”, “data”: []}
-/// ErrorEntity：请求报错基类，{“code”: 0, “message”: “”}
+Map<String, dynamic> httpHeaders = {
+  'Accept': 'application/json,*/*',
+  'Content-Type': 'application/json',
+  // 'token': DioUtils.TOKEN
+};
 
 class DioManager {
   static final DioManager _shared = DioManager._internal();
@@ -20,39 +21,37 @@ class DioManager {
   Dio dio;
   DioManager._internal() {
     if (dio == null) {
+      //  当响应状态码不是成功状态(如404)时，是否接收响应内容，如果是false,则response.data将会为null
       BaseOptions options = BaseOptions(
         baseUrl: NWApi.baseApi,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
         receiveDataWhenStatusError: false,
         connectTimeout: 30000,
+        headers: httpHeaders,
         receiveTimeout: 3000,
       );
       dio = Dio(options);
     }
   }
 
-  // 请求，返回参数为 T
-  // method：请求方法，NWMethod.POST等
-  // path：请求地址
-  // params：请求参数
-  // success：请求成功回调
-  // error：请求失败回调
-  Future request<T>(NWMethod method, String path,
-      {Map<String, dynamic> params,
-      Function(T) success,
-      Function(ErrorEntity) error}) async {
+// POST
+  Future requestPost<T>(NWMethod method, String path,
+      {Map params, Function(T) success, Function(ErrorEntity) error}) async {
     try {
-      Response response = await dio.request(path,
-          queryParameters: params,
-          options: Options(method: NWMethodValues[method]));
+      Response response = await dio.request(
+        path,
+        data: new Map<String, dynamic>.from(params),
+        options: Options(method: NWMethodValues[method]),
+      );
+
       if (response != null) {
-        BaseEntity entity = BaseEntity<T>.fromJson(response.data);
-        if (entity.code == 0) {
-          success(entity.data);
-        } else {
-          error(ErrorEntity(code: entity.code, message: entity.message));
-        }
+        // BaseEntity entity = BaseEntity<T>.fromJson(response.data);
+        success(response.data);
+        // if (entity.code == 0) {
+        // success(entity.data);
+
+        // } else {
+        // error(ErrorEntity(code: entity.code, message: entity.message));
+        // }
       } else {
         error(ErrorEntity(code: -1, message: "未知错误"));
       }
@@ -61,27 +60,23 @@ class DioManager {
     }
   }
 
-  // 请求，返回参数为 List<T>
-  // method：请求方法，NWMethod.POST等
-  // path：请求地址
-  // params：请求参数
-  // success：请求成功回调
-  // error：请求失败回调
-  Future requestList<T>(NWMethod method, String path,
-      {Map<String, dynamic> params,
-      Function(List<T>) success,
-      Function(ErrorEntity) error}) async {
+// GET
+  Future requestGet<T>(NWMethod method, String path,
+      {Map params, Function(T) success, Function(ErrorEntity) error}) async {
     try {
-      Response response = await dio.request(path,
-          queryParameters: params,
-          options: Options(method: NWMethodValues[method]));
+      Response response = await dio.request(
+        path,
+        queryParameters: new Map<String, dynamic>.from(params),
+        options: Options(method: NWMethodValues[method]),
+      );
       if (response != null) {
-        BaseListEntity entity = BaseListEntity<T>.fromJson(response.data);
-        if (entity.code == 0) {
-          success(entity.data);
-        } else {
-          error(ErrorEntity(code: entity.code, message: entity.message));
-        }
+        // BaseEntity entity = BaseEntity<T>.fromJson(response.data);
+        // if (entity.code == 0) {
+        // success(entity.data);
+        // success(response.data);
+        // } else {
+        // error(ErrorEntity(code: entity.code, message: entity.message));
+        // }
       } else {
         error(ErrorEntity(code: -1, message: "未知错误"));
       }
@@ -92,6 +87,7 @@ class DioManager {
 
   // 错误信息
   ErrorEntity createErrorEntity(DioError error) {
+    print(error);
     switch (error.type) {
       case DioErrorType.CANCEL:
         {
@@ -165,9 +161,8 @@ class DioManager {
                   return ErrorEntity(code: errCode, message: "未知错误 $errMsg");
                 }
             }
-            // return ErrorEntity(code: errCode, message: errMsg);
           } on Exception catch (_) {
-            return ErrorEntity(code: -1, message: "未知错误");
+            return ErrorEntity(code: -1, message: "未知错误 ");
           }
         }
         break;
@@ -176,29 +171,5 @@ class DioManager {
           return ErrorEntity(code: -1, message: error.message);
         }
     }
-  }
-}
-
-class BaseListEntity<T> {
-  int code;
-  String message;
-  List<T> data;
-
-  BaseListEntity({this.code, this.message, this.data});
-
-  factory BaseListEntity.fromJson(json) {
-    List<T> mData = new List<T>();
-    if (json['data'] != null) {
-      //遍历data并转换为我们传进来的类型
-      (json['data'] as List).forEach((v) {
-        mData.add(EntityFactory.generateOBJ<T>(v));
-      });
-    }
-
-    return BaseListEntity(
-      code: json["code"],
-      message: json["msg"],
-      data: mData,
-    );
   }
 }

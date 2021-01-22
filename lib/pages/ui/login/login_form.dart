@@ -4,8 +4,16 @@ import 'package:flutter/material.dart';
 // icon
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// 存储
+import 'package:shared_preferences/shared_preferences.dart';
+
 // theme
 import 'package:hello_world_flutter/style/theme.dart' as theme;
+
+// http 请求
+import 'package:hello_world_flutter/http/NWApi.dart';
+import 'package:hello_world_flutter/http/NWMethod.dart';
+import 'package:hello_world_flutter/http/dioManager.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -54,6 +62,12 @@ class _State extends State<LoginForm> {
     });
   }
 
+  //用户名
+  String userName;
+
+  //密码
+  String password;
+
 // flutter 焦点控件
 // 利用FocusNode和FocusScopeNode来控制焦点
 // 可以通过FocusNode.of(context)来获取widget树中默认的FocusScopeNode
@@ -88,7 +102,7 @@ class _State extends State<LoginForm> {
                       FontAwesomeIcons.user,
                       color: Colors.black,
                     ),
-                    hintText: "请输入账号",
+                    hintText: "请输入用户名",
                     border: InputBorder.none,
                   ),
                   style: new TextStyle(
@@ -97,6 +111,8 @@ class _State extends State<LoginForm> {
                   ),
                   //关联焦点
                   focusNode: userNameFocusNode,
+                  // 自动验证
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   /**
                  * 点击键盘确认按钮的回调
                  * 1.没有value回调
@@ -110,12 +126,11 @@ class _State extends State<LoginForm> {
                   },
                   //验证
                   validator: (value) {
-                    if (value.isEmpty) {
-                      return "账号不能为空";
-                    }
-                    return null;
+                    return value.trim().length > 0 ? null : "用户名不能为空";
                   },
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    userName = value;
+                  },
                 ),
               ),
             ),
@@ -152,6 +167,7 @@ class _State extends State<LoginForm> {
                   focusNode: passwordFocusNode,
                   //输入密码，需要用*****显示
                   obscureText: !isShowPassWord,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   style: new TextStyle(fontSize: 16, color: Colors.black),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -159,7 +175,9 @@ class _State extends State<LoginForm> {
                     }
                     return null;
                   },
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    password = value;
+                  },
                 ),
               ),
             ),
@@ -209,6 +227,29 @@ class _State extends State<LoginForm> {
     );
   }
 
+  // 登陆函数
+  void loginFormHttp(String userName, String password) {
+    // ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    // ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+    //   content: new Text("userName：$userName ，password：$password"),
+    // ));
+
+    // print(LoginApi.loginUrl);
+
+    final params = {
+      'UserName': 'wangyuanhai',
+      'Pwd': 'MTIzU2hlbmJvMTIz',
+    };
+
+    // 登陆
+    DioManager().requestPost(NWMethod.POST, LoginApi.loginUrl, params: params,
+        success: (res) async {
+      print(res);
+    }, error: (error) {
+      print("error code = ${error.code}, massage = ${error.message}");
+    });
+  }
+
   Widget buildSignInButton(BuildContext context) {
     return new Container(
       child: new Column(
@@ -232,6 +273,19 @@ class _State extends State<LoginForm> {
                 ),
               ),
             ),
+            onTap: () {
+              /**
+               * 利用key来获取widget的状态FormState
+               * 可以用过FormState对Form的子孙FromField进行统一的操作
+              */
+              if (_signInFormKey.currentState.validate()) {
+                //调用所有自容器的save回调，保存表单内容
+                _signInFormKey.currentState.save();
+
+                //如果输入都检验通过，则进行登录操作
+                loginFormHttp(userName, password);
+              }
+            },
           ),
           new Container(
             child: new Row(

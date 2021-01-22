@@ -1,10 +1,16 @@
+// 基础配置
+final String serverIp = '47.99.116.65:8899';
+
+getUrl(url) {
+  return "/5s.api/api/$url";
+}
+
+// /fives.web/assets/fives.config.json?dc=1611025371863
 class NWApi {
-  static final baseApi =
-      "https://easy-mock.bookset.io/mock/5dfae67d4946c20a50841fa7/example/";
-  // static final loginPath =
-  //     "user/login"; //接口返回：{"code": int, "message": "String", "data": {"account": "String", "password": "String"}}
-  // static final queryListPath =
-  //     "/query/list"; //接口返回：{"code": ing, "message": "String", "data": [int, int, String, int, String, int]}
-  // static final queryListJsonPath =
-  //     "/query/listjson"; //接口返回：{"code": int, "message": "String", "data": [{"account": "String", "password": "String"}， {"account": "String", "password": "String"}]}
+  static final baseApi = "http://$serverIp";
+}
+
+class LoginApi {
+  static final loginUrl = getUrl('Base_UserInfor/Login');
+  static final testUrl = '/fives.web/assets/fives.config.json?dc=1611025371863';
 }

@@ -3,13 +3,15 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 
 class Theme {
-  // 登录界面，定义渐变的颜色
-  static const Color loginGradientStart = const Color(0xFFfbab66);
-  static const Color loginGradientEnd = const Color(0xFFf7418c);
-
   static const Color loginBackColor = const Color(0xFFffffff);
 
   static const Color themeBlue = const Color(0xFF00478a);
+
+  static const Color themeBackGray = const Color(0xFFefeff4);
+
+  // 登录界面，定义渐变的颜色
+  static const Color loginGradientStart = const Color(0xFFfbab66);
+  static const Color loginGradientEnd = const Color(0xFFf7418c);
 
   static const LinearGradient primaryGradient = const LinearGradient(
     colors: const [loginGradientStart, loginGradientEnd],
