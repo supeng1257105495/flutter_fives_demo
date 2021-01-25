@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hello_world_flutter/style/theme.dart' as theme;
+import 'package:hello_world_flutter/iconfont/icon_font.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -78,6 +79,12 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
+    final menuDom = new Column(
+      children: [
+        // IconFont()
+      ],
+    );
+
     return Scaffold(
       body: SafeArea(
         child: new Container(
@@ -87,7 +94,8 @@ class HomeScreen extends StatelessWidget {
           child: new Stack(
             children: <Widget>[
               titleDom,
-              swiperDom
+              swiperDom,
+
               // Container(child: headerSection),
               // Container(child: iconSection),
               // Container(child: textSection),
