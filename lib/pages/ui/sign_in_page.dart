@@ -244,7 +244,7 @@ class _SignInPageState extends State<SignInPage> {
       child: new Container(
         padding: EdgeInsets.only(left: 42, right: 42, top: 10, bottom: 10),
         decoration: new BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
+          borderRadius: new BorderRadius.all(Radius.circular(5)),
           gradient: theme.Theme.primaryGradient,
         ),
         child: new Text(
@@ -253,9 +253,10 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
       onTap: () {
-        /**利用key来获取widget的状态FormState
-              可以用过FormState对Form的子孙FromField进行统一的操作
-           */
+        /**
+         * 利用key来获取widget的状态FormState
+         * 可以用过FormState对Form的子孙FromField进行统一的操作
+         */
         if (_SignInFormKey.currentState.validate()) {
           //如果输入都检验通过，则进行登录操作
           ScaffoldMessenger.of(context).removeCurrentSnackBar();

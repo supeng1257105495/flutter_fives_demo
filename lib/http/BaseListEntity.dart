@@ -8,7 +8,7 @@ class BaseListEntity<T> {
   BaseListEntity({this.code, this.message, this.data});
 
   factory BaseListEntity.fromJson(json) {
-    List<T> mData = List();
+    List<T> mData = [];
     if (json['data'] != null) {
       //遍历data并转换为我们传进来的类型
       (json['data'] as List).forEach((v) {

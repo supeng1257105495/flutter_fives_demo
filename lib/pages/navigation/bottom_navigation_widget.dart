@@ -43,49 +43,49 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     // print(user);
     // 如有无登陆信息则跳转登陆页
     // if (user == null) {
-    // return new LoginPage();
+    return new LoginPage();
     // } else {
-    return Scaffold(
-      body: list[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.email,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Email',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.pages,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Pages',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.airplay,
-              color: _bottomNavigationColor,
-            ),
-            label: 'Airplay',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
-    );
+    // return Scaffold(
+    //   body: list[_currentIndex],
+    //   bottomNavigationBar: BottomNavigationBar(
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.home,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: '首页',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.map,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: '地图',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.question_answer,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: '问题',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(
+    //           Icons.data_usage_rounded,
+    //           color: _bottomNavigationColor,
+    //         ),
+    //         label: '用户中心',
+    //       ),
+    //     ],
+    //     type: BottomNavigationBarType.fixed,
+    //     currentIndex: _currentIndex,
+    //     onTap: (int index) {
+    //       setState(() {
+    //         _currentIndex = index;
+    //       });
+    //     },
+    //   ),
+    // );
   }
 }

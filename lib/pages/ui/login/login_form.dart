@@ -68,6 +68,14 @@ class _State extends State<LoginForm> {
   //密码
   String password;
 
+  TextEditingController selectionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // selectionController.text = "初始值";
+  }
+
 // flutter 焦点控件
 // 利用FocusNode和FocusScopeNode来控制焦点
 // 可以通过FocusNode.of(context)来获取widget树中默认的FocusScopeNode
@@ -109,6 +117,7 @@ class _State extends State<LoginForm> {
                     fontSize: 16,
                     color: Colors.black,
                   ),
+                  controller: selectionController,
                   //关联焦点
                   focusNode: userNameFocusNode,
                   // 自动验证
